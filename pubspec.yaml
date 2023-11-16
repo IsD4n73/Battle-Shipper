@@ -1,5 +1,5 @@
 name: battle_shipper
-description: A new Flutter project.
+description: Battle Ship Game.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -42,6 +42,9 @@ dependencies:
   # UI
   dash_flags: ^0.1.1
   bot_toast: ^4.1.3
+
+  # UTILS
+  url_strategy: ^0.2.0
 
 dev_dependencies:
   flutter_test:

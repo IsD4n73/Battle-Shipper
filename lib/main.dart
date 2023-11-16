@@ -2,9 +2,13 @@ import 'package:battle_shipper/common/utils/routes.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  setPathUrlStrategy();
+
   await EasyLocalization.ensureInitialized();
 
   runApp(
