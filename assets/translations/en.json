@@ -1,4 +1,7 @@
 {
-  "test":"{} are written in the {} language"
+  "Language:": "Language: ",
+  "Settings": "Settings",
+  "Change Language Warning": "Per l'effetto del cambio lingua riavvia l'app",
+  "Change Language Warning Web": "Per l'effetto del cambio lingua ricarica la pagina"
 
 }

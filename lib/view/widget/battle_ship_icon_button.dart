@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import '../common/theme/app_color.dart';
-import '../common/utils/enums.dart';
 
-class BattleShipButton extends StatelessWidget {
+import '../../common/theme/app_color.dart';
+import '../../common/utils/enums.dart';
+
+class BattleShipIconButton extends StatelessWidget {
   final String text;
   final void Function()? onPressed;
   final BattleShipButtonType buttonType;
+  final IconData icon;
 
-  const BattleShipButton({
+  const BattleShipIconButton({
     super.key,
     required this.text,
     this.onPressed,
     required this.buttonType,
+    required this.icon,
   });
 
   @override
@@ -22,7 +25,6 @@ class BattleShipButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColor.whiteColor,
             foregroundColor: AppColor.blackColor,
-            padding: const EdgeInsets.symmetric(horizontal: 30),
             shape: const RoundedRectangleBorder(
               side: BorderSide(
                 color: AppColor.blackColor,
@@ -33,15 +35,19 @@ class BattleShipButton extends StatelessWidget {
             ),
           ),
           onPressed: onPressed,
-          child: Text(
-            text,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+          child: Row(
+            children: [
+              Text(
+                text,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Icon(icon),
+            ],
           ),
         );
       case BattleShipButtonType.dark:
         return ElevatedButton(
           style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
             backgroundColor: AppColor.blackColor,
             foregroundColor: AppColor.whiteColor,
             shape: const RoundedRectangleBorder(
@@ -54,9 +60,14 @@ class BattleShipButton extends StatelessWidget {
             ),
           ),
           onPressed: onPressed,
-          child: Text(
-            text,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+          child: Row(
+            children: [
+              Text(
+                text,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Icon(icon),
+            ],
           ),
         );
     }

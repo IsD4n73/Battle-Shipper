@@ -1,10 +1,10 @@
-import 'package:battle_shipper/app.dart';
+import 'package:battle_shipper/common/utils/routes.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await EasyLocalization.ensureInitialized();
 
   runApp(
@@ -33,7 +33,9 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      home: const App(),
+      builder: BotToastInit(),
+      navigatorObservers: [BotToastNavigatorObserver()],
+      routes: AppRoutes.routes,
     );
   }
 }
