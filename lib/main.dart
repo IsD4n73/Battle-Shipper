@@ -27,6 +27,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Battle Ship",
+      theme: ThemeData(
+        useMaterial3: true,
+      ),
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
