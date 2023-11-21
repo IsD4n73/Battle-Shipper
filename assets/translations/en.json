@@ -3,6 +3,11 @@
   "Settings": "Settings",
   "Change Language Warning": "Per l'effetto del cambio lingua riavvia l'app",
   "Change Language Warning Web": "Per l'effetto del cambio lingua ricarica la pagina",
-  "Background Music Volume": "Background Music Volume"
+  "Background Music Volume": "Background Music Volume",
+  "Welcome to Battleship": "Welcome to Battleship",
+  "Select a game mode": "Select a game mode",
+  "Easy": "Easy",
+  "Normal": "Normal",
+  "Hard": "Hard"
 
 }

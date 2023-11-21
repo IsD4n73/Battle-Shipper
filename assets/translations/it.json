@@ -3,6 +3,11 @@
   "Settings": "Impostazioni",
   "Change Language Warning": "For the effect of language change restart the app",
   "Change Language Warning Web": "For the effect of language change reload the page",
-  "Background Music Volume": "Volume Musica Sottofondo"
+  "Background Music Volume": "Volume Musica Sottofondo",
+  "Welcome to Battleship": "Benvenuto in Battleship",
+  "Select a game mode": "Seleziona una modalità di gioco",
+  "Easy": "Facile",
+  "Normal": "Normale",
+  "Hard": "Difficile"
 
 }

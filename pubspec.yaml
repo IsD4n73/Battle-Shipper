@@ -76,9 +76,9 @@ flutter:
     - assets/audio/
     - assets/translations/
     - packages/animated_emoji/lottie/smile.json
-    - packages/animated_emoji/lottie/neutral-face.json
+    - packages/animated_emoji/lottie/neutralFace.json
     - packages/animated_emoji/lottie/screaming.json
-    - packages/animated_emoji/lottie/imp-smile.json
+    - packages/animated_emoji/lottie/impSmile.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
