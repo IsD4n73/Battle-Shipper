@@ -1,5 +1,5 @@
-import 'package:battle_shipper/view/settings/widget/audiobg_widget.dart';
-import '../../../view/settings/widget/language_widget.dart';
+import 'package:battle_shipper/presenter/view/settings/widget/audiobg_widget.dart';
+import 'package:battle_shipper/presenter/view/settings/widget/language_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
