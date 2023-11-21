@@ -1,3 +1,4 @@
+import 'package:battle_shipper/common/utils/audio.dart';
 import 'package:battle_shipper/common/utils/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,8 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
+
+    Audio.playBackground();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.pushReplacementNamed(context, AppRoutes.homeRoute);
