@@ -152,12 +152,14 @@ class _HomePageState extends State<HomePage> {
             Center(
               heightFactor: isPortrait ? 5 : 2,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BattleShipContinueButton(
                     text: "JOIN",
                     buttonType: BattleShipButtonType.light,
                     onPressed: () {},
                   ),
+                  const SizedBox(height: 10),
                   !singlePlayer
                       ? BattleShipContinueButton(
                           text: "CREATE",
