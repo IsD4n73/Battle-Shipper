@@ -12,13 +12,18 @@ class Audio {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final double volume = prefs.getDouble(KeyConst.sharedVolume) ?? 1;
 
-    if (volume == 0) {
-      return;
-    }
-
     await playerBg.play(
       AssetSource("audio/bg.wav"),
       volume: volume,
     );
+  }
+
+  static Future<double> getCurrentBGVolume() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getDouble(KeyConst.sharedVolume) ?? 1;
+  }
+
+  static Future<double> getCurrentSFXVolume() async {
+    return 0.0;
   }
 }
