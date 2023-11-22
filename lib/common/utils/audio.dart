@@ -18,6 +18,30 @@ class Audio {
     );
   }
 
+  static Future<void> playMiss() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final double volume = prefs.getDouble(KeyConst.sharedSFX) ?? 1;
+
+    await playerSfx.stop();
+
+    await playerSfx.play(
+      AssetSource("audio/miss.mp3"),
+      volume: volume,
+    );
+  }
+
+  static Future<void> playExplosion() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final double volume = prefs.getDouble(KeyConst.sharedSFX) ?? 1;
+
+    await playerSfx.stop();
+
+    await playerSfx.play(
+      AssetSource("audio/explosion.mp3"),
+      volume: volume,
+    );
+  }
+
   static Future<double> getCurrentBGVolume() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getDouble(KeyConst.sharedVolume) ?? 1;
