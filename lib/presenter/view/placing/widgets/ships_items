@@ -1,0 +1,54 @@
+
+
+import 'package:flutter/material.dart';
+
+
+class ShipsItems extends StatelessWidget {
+  List<Ship> ships;
+  var onDragCompleted;
+  var onDragStarted;
+
+  
+  const ShipsItems(
+      {super.key,
+      required this.ships,
+      required this.onDragCompleted,
+      required this.onDragStarted,
+      });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+            flex: 2,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: ships.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return SizedBox(
+                  width: 30,
+                  height: ships[index].image.height!,
+                  child: Draggable<Ship>(
+                    onDragCompleted: onDragCompleted, 
+                    data: ships[index],
+                    dragAnchorStrategy: pointerDragAnchorStrategy,
+                    onDragStarted: onDragStarted,
+                    feedback: Opacity(
+                      opacity: 0.5,
+                      child: SizedBox(
+                        height:
+                            ((120 * 33) / 100) + 30 * (ships[index].size - 1),
+                        child: ships[index].image,
+                      ),
+                    ),
+                    child: SizedBox(
+                        height: (ships[index].image.height! * 33) / 100,
+                        child: ships[index].image),
+                  ),
+                );
+              },
+            ),
+          );
+  }
+}
+
