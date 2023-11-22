@@ -34,24 +34,9 @@ class _DraggableShipState extends State<DraggableShip> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            flex: 2,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: ships.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return SizedBox(
-                  width: 30,
-                  height: ships[index].image.height!,
-                  child: Draggable<Ship>(
-                    onDragCompleted: () {
-                      selectedIndexs = [];
-                      setState(() {});
-                    },
-                    data: ships[index],
-                    dragAnchorStrategy: pointerDragAnchorStrategy,
-                    onDragStarted: () {
+          ShipsItems(
+            ships: ships, 
+            onDragStarted: () {
                       setState(() {
                         selectedIndex = index;
                         if (ships.isNotEmpty) {
@@ -59,21 +44,10 @@ class _DraggableShipState extends State<DraggableShip> {
                         }
                       });
                     },
-                    feedback: Opacity(
-                      opacity: 0.5,
-                      child: SizedBox(
-                        height:
-                            ((120 * 33) / 100) + 30 * (ships[index].size - 1),
-                        child: ships[index].image,
-                      ),
-                    ),
-                    child: SizedBox(
-                        height: (ships[index].image.height! * 33) / 100,
-                        child: ships[index].image),
-                  ),
-                );
-              },
-            ),
+            onDragCompleted: () {
+                      selectedIndexs = [];
+                      setState(() {});
+                    },
           ),
           Expanded(
             flex: 6,
