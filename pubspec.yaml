@@ -47,6 +47,8 @@ dependencies:
   url_strategy: ^0.2.0
   shared_preferences: ^2.2.2
   audioplayers: ^5.2.1
+  uuid: ^3.0.6
+  peerdart: ^0.5.4
 
 dev_dependencies:
   flutter_test:
