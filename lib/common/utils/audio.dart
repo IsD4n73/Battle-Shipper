@@ -48,6 +48,7 @@ class Audio {
   }
 
   static Future<double> getCurrentSFXVolume() async {
-    return 0.0;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getDouble(KeyConst.sharedSFX) ?? 1;
   }
 }
