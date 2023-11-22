@@ -2,6 +2,7 @@ import 'package:animated_emoji/animated_emoji.dart';
 import 'package:battle_shipper/common/theme/app_color.dart';
 import 'package:battle_shipper/common/utils/enums.dart';
 import 'package:battle_shipper/common/utils/routes.dart';
+import 'package:battle_shipper/presenter/view/placing/pages/ship_place.dart';
 import 'package:battle_shipper/presenter/view/widget/battle_ship_button.dart';
 import 'package:battle_shipper/presenter/view/widget/battle_ship_continue_button.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -157,7 +158,13 @@ class _HomePageState extends State<HomePage> {
                   BattleShipContinueButton(
                     text: "JOIN",
                     buttonType: BattleShipButtonType.light,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DraggableShip(),
+                          ));
+                    },
                   ),
                   const SizedBox(height: 10),
                   !singlePlayer
