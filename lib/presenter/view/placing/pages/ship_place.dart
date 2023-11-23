@@ -75,51 +75,53 @@ class _DraggableShipState extends State<DraggableShip> {
           SizedBox(
             height: 120,
             width: MediaQuery.of(context).size.width,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  ships.length,
-                  (index) => Draggable<Ship>(
-                    onDragCompleted: () {
-                      selectedIndexs = [];
-                      setState(() {});
-                    },
-                    data: ships[index],
-                    dragAnchorStrategy: pointerDragAnchorStrategy,
-                    onDragStarted: () {
-                      setState(() {
-                        selectedIndex = index;
-                        if (ships.isNotEmpty) {
-                          size = ships[index].size;
-                        }
-                      });
-                    },
-                    feedback: Opacity(
-                      opacity: 0.5,
-                      child: RotatedBox(
-                        quarterTurns: ships[index].isVertical ? 0 : 3,
-                        child: SizedBox(
-                          height:
-                              ((120 * 33) / 100) + 30 * (ships[index].size - 1),
-                          child: ships[index].image,
-                        ),
-                      ),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
+            child: Center(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    ships.length,
+                    (index) => Draggable<Ship>(
+                      onDragCompleted: () {
+                        selectedIndexs = [];
+                        setState(() {});
+                      },
+                      data: ships[index],
+                      dragAnchorStrategy: pointerDragAnchorStrategy,
+                      onDragStarted: () {
                         setState(() {
-                          ships[index].isVertical = !ships[index].isVertical;
+                          selectedIndex = index;
+                          if (ships.isNotEmpty) {
+                            size = ships[index].size;
+                          }
                         });
                       },
-                      child: RotatedBox(
-                        quarterTurns: ships[index].isVertical ? 0 : 3,
-                        child: SizedBox(
-                          height:
-                              ((120 * 33) / 100) + 30 * (ships[index].size - 1),
-                          child: ships[index].image,
+                      feedback: Opacity(
+                        opacity: 0.5,
+                        child: RotatedBox(
+                          quarterTurns: ships[index].isVertical ? 0 : 3,
+                          child: SizedBox(
+                            height: ((120 * 33) / 100) +
+                                30 * (ships[index].size - 1),
+                            child: ships[index].image,
+                          ),
+                        ),
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            ships[index].isVertical = !ships[index].isVertical;
+                          });
+                        },
+                        child: RotatedBox(
+                          quarterTurns: ships[index].isVertical ? 0 : 3,
+                          child: SizedBox(
+                            height: ((120 * 33) / 100) +
+                                30 * (ships[index].size - 1),
+                            child: ships[index].image,
+                          ),
                         ),
                       ),
                     ),
@@ -128,123 +130,173 @@ class _DraggableShipState extends State<DraggableShip> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: GridUtils.gridSize * GridUtils.gridSize,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: GridUtils.gridSize,
-              ),
-              itemBuilder: (context, index) {
-                return DragTarget<Ship>(
-                  onLeave: (data) {
-                    selectedIndexs = [];
-                    setState(() {});
-                  },
-                  onWillAccept: (data) {
-                    bool flag = false;
-
-                    if (data == null) {
-                      return flag;
-                    }
-
-                    if (data.isVertical) {
-                      for (int j = 0; j < size; j++) {
-                        if (index + (GridUtils.gridSize * j) > 99) {
-                          return flag;
-                        }
-                      }
-                    } else {
-                      for (int j = 0; j < size; j++) {
-                        if (index + (1 * j) >=
-                            ((index / GridUtils.gridSize) + 1).toInt() *
-                                GridUtils.gridSize) {
-                          return flag;
-                        }
-                      }
-                    }
-
-                    for (int j = 0; j < data.size; j++) {
-                      if (data.isVertical) {
-                        flag = flag ||
-                            placedIndexs.any((e) =>
-                                e.index == index + (GridUtils.gridSize * j));
-                      } else {
-                        flag = flag ||
-                            placedIndexs.any((e) => e.index == index + (1 * j));
-                      }
-                    }
-
-                    return !flag;
-                  },
-                  builder: (context, accepted, rejected) {
-                    if (accepted.isNotEmpty) {
-                      for (int j = 0; j < size; j++) {
-                        int cell = ships[selectedIndex].isVertical
-                            ? index + (GridUtils.gridSize * j)
-                            : index + (1 * j);
-                        selectedIndexs.add(cell);
-                      }
-                      WidgetsBinding.instance
-                          .addPostFrameCallback((_) => setState(() {}));
-                    }
-                    if (placedIndexs.any((e) => e.index == index)) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          border: Border.all(
-                            color: AppColor.primaryColor,
-                          ),
-                        ),
-                        child: RotatedBox(
-                          quarterTurns:
-                              placedIndexs[getIndex(index)].ship.isVertical
-                                  ? 0
-                                  : 3,
-                          child: Image.asset(
-                              "assets/images/ship_${placedIndexs[getIndex(index)].ship.size}_${placedIndexs[getIndex(index)].position}.png"),
-                        ),
-                      );
-                    }
-
-                    return Container(
-                      child: Text(index.toString()),
-                      decoration: BoxDecoration(
-                        color: placedIndexs.any(
-                          (e) => e.index == index,
-                        )
-                            ? AppColor.secondaryColor
-                            : Colors.transparent,
-                        border: Border.all(
-                          color: selectedIndexs.contains(index)
-                              ? AppColor.terziaryColor
-                              : placedIndexs.any(
-                                  (e) => e.index == index,
-                                )
-                                  ? AppColor.secondaryColor
-                                  : AppColor.primaryColor,
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      ...List.generate(GridUtils.gridSize,
+                          (index) => Text(Converter.indexToLetter(index))),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          itemCount: 10,
+                          padding: EdgeInsets.zero,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisSpacing: 2, crossAxisCount: 1),
+                          itemBuilder: (context, index) =>
+                              Center(child: Text((index + 1).toString())),
                         ),
                       ),
-                    );
-                  },
-                  onAccept: (Ship data) {
-                    setState(() {
-                      for (int j = 0; j < data.size; j++) {
-                        if (data.isVertical) {
-                          placedIndexs.add(IndexInfo(
-                              data, index + (GridUtils.gridSize * j), j + 1));
-                        } else {
-                          placedIndexs
-                              .add(IndexInfo(data, index + (1 * j), j + 1));
-                        }
-                      }
-                      ships.removeAt(selectedIndex);
-                    });
-                  },
-                );
-              },
+                      Flexible(
+                        flex: 10,
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: GridUtils.gridSize * GridUtils.gridSize,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: GridUtils.gridSize,
+                          ),
+                          itemBuilder: (context, index) {
+                            return DragTarget<Ship>(
+                              onLeave: (data) {
+                                selectedIndexs = [];
+                                setState(() {});
+                              },
+                              onWillAccept: (data) {
+                                bool flag = false;
+
+                                if (data == null) {
+                                  return flag;
+                                }
+
+                                if (data.isVertical) {
+                                  for (int j = 0; j < size; j++) {
+                                    if (index + (GridUtils.gridSize * j) > 99) {
+                                      return flag;
+                                    }
+                                  }
+                                } else {
+                                  for (int j = 0; j < size; j++) {
+                                    if (index + (1 * j) >=
+                                        ((index / GridUtils.gridSize) + 1)
+                                                .toInt() *
+                                            GridUtils.gridSize) {
+                                      return flag;
+                                    }
+                                  }
+                                }
+
+                                for (int j = 0; j < data.size; j++) {
+                                  if (data.isVertical) {
+                                    flag = flag ||
+                                        placedIndexs.any((e) =>
+                                            e.index ==
+                                            index + (GridUtils.gridSize * j));
+                                  } else {
+                                    flag = flag ||
+                                        placedIndexs.any(
+                                            (e) => e.index == index + (1 * j));
+                                  }
+                                }
+
+                                return !flag;
+                              },
+                              builder: (context, accepted, rejected) {
+                                if (accepted.isNotEmpty) {
+                                  for (int j = 0; j < size; j++) {
+                                    int cell = ships[selectedIndex].isVertical
+                                        ? index + (GridUtils.gridSize * j)
+                                        : index + (1 * j);
+                                    selectedIndexs.add(cell);
+                                  }
+                                  WidgetsBinding.instance.addPostFrameCallback(
+                                      (_) => setState(() {}));
+                                }
+                                if (placedIndexs.any((e) => e.index == index)) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      border: Border.all(
+                                        color: AppColor.primaryColor,
+                                      ),
+                                    ),
+                                    child: RotatedBox(
+                                      quarterTurns:
+                                          placedIndexs[getIndex(index)]
+                                                  .ship
+                                                  .isVertical
+                                              ? 0
+                                              : 3,
+                                      child: Image.asset(
+                                          "assets/images/ship_${placedIndexs[getIndex(index)].ship.size}_${placedIndexs[getIndex(index)].position}.png"),
+                                    ),
+                                  );
+                                }
+
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: placedIndexs.any(
+                                      (e) => e.index == index,
+                                    )
+                                        ? AppColor.secondaryColor
+                                        : Colors.transparent,
+                                    border: Border.all(
+                                      color: selectedIndexs.contains(index)
+                                          ? AppColor.terziaryColor
+                                          : placedIndexs.any(
+                                              (e) => e.index == index,
+                                            )
+                                              ? AppColor.secondaryColor
+                                              : AppColor.primaryColor,
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(index.toString(),
+                                        style:
+                                            TextStyle(color: Colors.grey[500])),
+                                  ),
+                                );
+                              },
+                              onAccept: (Ship data) {
+                                setState(() {
+                                  for (int j = 0; j < data.size; j++) {
+                                    if (data.isVertical) {
+                                      placedIndexs.add(IndexInfo(
+                                          data,
+                                          index + (GridUtils.gridSize * j),
+                                          j + 1));
+                                    } else {
+                                      placedIndexs.add(IndexInfo(
+                                          data, index + (1 * j), j + 1));
+                                    }
+                                  }
+                                  ships.removeAt(selectedIndex);
+                                });
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           BattleShipContinueButton(
