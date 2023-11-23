@@ -23,6 +23,13 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const FlutterLogo();
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
+      body: Center(
+        child: Image.asset("assets/images/splash-logo.png"),
+      ),
+    );
   }
 }

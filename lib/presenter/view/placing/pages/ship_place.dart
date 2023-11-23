@@ -50,7 +50,7 @@ class _DraggableShipState extends State<DraggableShip> {
             children: [
               BattleShipContinueButton(
                 text: "Reset".tr(),
-                buttonType: BattleShipButtonType.dark,
+                buttonType: BattleShipButtonType.light,
                 onPressed: () {
                   setState(() {
                     ships = List.generate(7, (index) => Ship.create(index));
@@ -62,6 +62,11 @@ class _DraggableShipState extends State<DraggableShip> {
                 },
               ),
               BattleShipContinueButton(
+                text: "Continue".tr(),
+                buttonType: BattleShipButtonType.dark,
+                onPressed: ships.isNotEmpty ? null : () {},
+              ),
+              BattleShipContinueButton(
                 text: "Randomize".tr(),
                 buttonType: BattleShipButtonType.light,
                 onPressed: () {
@@ -70,11 +75,6 @@ class _DraggableShipState extends State<DraggableShip> {
                     ships = [];
                   });
                 },
-              ),
-              BattleShipContinueButton(
-                text: "Continue".tr(),
-                buttonType: BattleShipButtonType.dark,
-                onPressed: ships.isNotEmpty ? null : () {},
               ),
             ],
           ),
