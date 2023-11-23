@@ -12,6 +12,9 @@
   "Hard": "Hard",
   "Continue": "Continue",
   "Flip": "Flip",
-  "Place your ships": "Place your ships"
+  "Place your ships": "Place your ships",
+  "Click on ships to rotate them": "Click on ships to rotate them",
+  "Reset": "Reset",
+  "Randomize": "Randomize"
 
 }

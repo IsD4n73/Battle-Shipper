@@ -1,4 +1,5 @@
 import 'package:battle_shipper/common/utils/enums.dart';
+import 'package:battle_shipper/domain/entities/index_info.dart';
 import 'package:battle_shipper/presenter/view/widget/battle_ship_continue_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class DraggableShip extends StatefulWidget {
 
 class _DraggableShipState extends State<DraggableShip> {
   List<Ship> ships = [];
-  List<int> placedShips = [];
+  List<IndexInfo> placedIndexs = [];
   int selectedIndex = 0;
   int size = 0;
   List<int> selectedIndexs = [];
@@ -39,6 +40,30 @@ class _DraggableShipState extends State<DraggableShip> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const Text("Click on ships to rotate them").tr(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              BattleShipContinueButton(
+                text: "Reset".tr(),
+                buttonType: BattleShipButtonType.dark,
+                onPressed: () {
+                  setState(() {
+                    ships = List.generate(7, (index) => Ship.create(index));
+                    placedIndexs = [];
+                    selectedIndex = 0;
+                    size = 0;
+                    selectedIndexs = [];
+                  });
+                },
+              ),
+              BattleShipContinueButton(
+                text: "Randomize".tr(),
+                buttonType: BattleShipButtonType.light,
+                onPressed: () {},
+              ),
+            ],
+          ),
           SizedBox(
             height: 120,
             width: MediaQuery.of(context).size.width,
@@ -67,7 +92,7 @@ class _DraggableShipState extends State<DraggableShip> {
                     feedback: Opacity(
                       opacity: 0.5,
                       child: RotatedBox(
-                        quarterTurns: ships[index].isVertical ? 0 : 1,
+                        quarterTurns: ships[index].isVertical ? 0 : 3,
                         child: SizedBox(
                           height:
                               ((120 * 33) / 100) + 30 * (ships[index].size - 1),
@@ -82,7 +107,7 @@ class _DraggableShipState extends State<DraggableShip> {
                         });
                       },
                       child: RotatedBox(
-                        quarterTurns: ships[index].isVertical ? 0 : 1,
+                        quarterTurns: ships[index].isVertical ? 0 : 3,
                         child: SizedBox(
                           height:
                               ((120 * 33) / 100) + 30 * (ships[index].size - 1),
@@ -136,10 +161,11 @@ class _DraggableShipState extends State<DraggableShip> {
                     for (int j = 0; j < data.size; j++) {
                       if (data.isVertical) {
                         flag = flag ||
-                            placedShips
-                                .contains(index + (GridUtils.gridSize * j));
+                            placedIndexs.any((e) =>
+                                e.index == index + (GridUtils.gridSize * j));
                       } else {
-                        flag = flag || placedShips.contains(index + (1 * j));
+                        flag = flag ||
+                            placedIndexs.any((e) => e.index == index + (1 * j));
                       }
                     }
 
@@ -156,15 +182,30 @@ class _DraggableShipState extends State<DraggableShip> {
                       WidgetsBinding.instance
                           .addPostFrameCallback((_) => setState(() {}));
                     }
+                    if (placedIndexs.any((e) => e.index == index)) {
+                      return RotatedBox(
+                        quarterTurns:
+                            placedIndexs[getIndex(index)].ship.isVertical
+                                ? 0
+                                : 3,
+                        child: Image.asset(
+                            "assets/images/ship_${placedIndexs[getIndex(index)].ship.size}_${placedIndexs[getIndex(index)].position}.png"),
+                      );
+                    }
+
                     return Container(
                       decoration: BoxDecoration(
-                        color: placedShips.contains(index)
+                        color: placedIndexs.any(
+                          (e) => e.index == index,
+                        )
                             ? AppColor.secondaryColor
                             : Colors.transparent,
                         border: Border.all(
                           color: selectedIndexs.contains(index)
                               ? AppColor.terziaryColor
-                              : placedShips.contains(index)
+                              : placedIndexs.any(
+                                  (e) => e.index == index,
+                                )
                                   ? AppColor.secondaryColor
                                   : AppColor.primaryColor,
                         ),
@@ -172,30 +213,20 @@ class _DraggableShipState extends State<DraggableShip> {
                     );
                   },
                   onAccept: (Ship data) {
-                    bool flag = false;
-
-                    for (int j = 0; j < data.size; j++) {
-                      if (data.isVertical) {
-                        flag = flag ||
-                            placedShips
-                                .contains(index + (GridUtils.gridSize * j));
-                      } else {
-                        flag = flag || placedShips.contains(index + (1 * j));
-                      }
-                    }
-
-                    if (!flag) {
-                      setState(() {
-                        for (int j = 0; j < data.size; j++) {
-                          if (data.isVertical) {
-                            placedShips.add(index + (GridUtils.gridSize * j));
-                          } else {
-                            placedShips.add(index + (1 * j));
-                          }
+                    setState(() {
+                      for (int j = 0; j < data.size; j++) {
+                        if (data.isVertical) {
+                          placedIndexs.add(IndexInfo(
+                              data, index + (GridUtils.gridSize * j), j + 1));
+                        } else {
+                          placedIndexs
+                              .add(IndexInfo(data, index + (1 * j), j + 1));
                         }
-                        ships.removeAt(selectedIndex);
-                      });
-                    }
+                      }
+
+                      print(placedIndexs);
+                      ships.removeAt(selectedIndex);
+                    });
                   },
                 );
               },
@@ -204,10 +235,19 @@ class _DraggableShipState extends State<DraggableShip> {
           BattleShipContinueButton(
             text: "Continue".tr(),
             buttonType: BattleShipButtonType.dark,
-            onPressed: () {},
+            onPressed: ships.isNotEmpty ? null : () {},
           ),
         ],
       ),
     );
+  }
+
+  int getIndex(int index) {
+    for (int i = 0; i < placedIndexs.length; i++) {
+      if (placedIndexs[i].index == index) {
+        return i;
+      }
+    }
+    return 0;
   }
 }
