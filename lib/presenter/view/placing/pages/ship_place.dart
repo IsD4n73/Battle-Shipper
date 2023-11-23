@@ -280,7 +280,6 @@ class _DraggableShipState extends State<DraggableShip> {
     bool flag = false;
 
     for (Ship ship in ships) {
-      print("Sto assegnanfo posizione ship");
       List<IndexInfo> list = [];
       flag = false;
       int randomCell;
@@ -298,11 +297,9 @@ class _DraggableShipState extends State<DraggableShip> {
         list = [];
         for (int i = 0; i < ship.size; i++) {
           if (ship.isVertical) {
-            print("Nave verticale");
             // verticale
             if (placedIndexs
                 .any((element) => element.index == randomCell + (i * 10))) {
-              print("Posizione gia occupata");
               flag = true;
               list.clear();
               break;
@@ -312,11 +309,9 @@ class _DraggableShipState extends State<DraggableShip> {
             IndexInfo info = IndexInfo(ship, randomCell + (i * 10), i + 1);
             list.add(info);
           } else {
-            print("nave orizzontale");
             // horizontal
             if (placedIndexs
                 .any((element) => element.index == randomCell + i)) {
-              print("Posizione gia occupata");
               flag = true;
               list.clear();
               break;
@@ -328,12 +323,9 @@ class _DraggableShipState extends State<DraggableShip> {
           }
         }
       } while (flag);
-      print("NAVE VERTICALE? ${ship.isVertical}");
-      print("Dimensione nave: ${ship.size}");
       placedIndexs.addAll(list);
     }
 
-    print("UUSCITA | Random index: ${placedIndexs}");
     return placedIndexs;
   }
 }
