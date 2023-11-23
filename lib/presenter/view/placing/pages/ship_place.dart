@@ -1,3 +1,4 @@
+import 'package:battle_shipper/common/utils/converter.dart';
 import 'package:battle_shipper/common/utils/enums.dart';
 import 'package:battle_shipper/domain/entities/index_info.dart';
 import 'package:battle_shipper/presenter/view/widget/battle_ship_continue_button.dart';
@@ -121,7 +122,7 @@ class _DraggableShipState extends State<DraggableShip> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -183,13 +184,21 @@ class _DraggableShipState extends State<DraggableShip> {
                           .addPostFrameCallback((_) => setState(() {}));
                     }
                     if (placedIndexs.any((e) => e.index == index)) {
-                      return RotatedBox(
-                        quarterTurns:
-                            placedIndexs[getIndex(index)].ship.isVertical
-                                ? 0
-                                : 3,
-                        child: Image.asset(
-                            "assets/images/ship_${placedIndexs[getIndex(index)].ship.size}_${placedIndexs[getIndex(index)].position}.png"),
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          border: Border.all(
+                            color: AppColor.primaryColor,
+                          ),
+                        ),
+                        child: RotatedBox(
+                          quarterTurns:
+                              placedIndexs[getIndex(index)].ship.isVertical
+                                  ? 0
+                                  : 3,
+                          child: Image.asset(
+                              "assets/images/ship_${placedIndexs[getIndex(index)].ship.size}_${placedIndexs[getIndex(index)].position}.png"),
+                        ),
                       );
                     }
 
@@ -223,8 +232,6 @@ class _DraggableShipState extends State<DraggableShip> {
                               .add(IndexInfo(data, index + (1 * j), j + 1));
                         }
                       }
-
-                      print(placedIndexs);
                       ships.removeAt(selectedIndex);
                     });
                   },
