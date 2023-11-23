@@ -34,6 +34,7 @@ class _DraggableShipState extends State<DraggableShip> {
 
   @override
   Widget build(BuildContext context) {
+    double gridWidth = MediaQuery.of(context).size.height / 2;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Place your ships").tr(),
@@ -69,6 +70,11 @@ class _DraggableShipState extends State<DraggableShip> {
                     ships = [];
                   });
                 },
+              ),
+              BattleShipContinueButton(
+                text: "Continue".tr(),
+                buttonType: BattleShipButtonType.dark,
+                onPressed: ships.isNotEmpty ? null : () {},
               ),
             ],
           ),
@@ -130,9 +136,10 @@ class _DraggableShipState extends State<DraggableShip> {
               ),
             ),
           ),
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 10),
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: SizedBox(
+              width: gridWidth,
               child: Column(
                 children: [
                   Row(
@@ -298,11 +305,6 @@ class _DraggableShipState extends State<DraggableShip> {
                 ],
               ),
             ),
-          ),
-          BattleShipContinueButton(
-            text: "Continue".tr(),
-            buttonType: BattleShipButtonType.dark,
-            onPressed: ships.isNotEmpty ? null : () {},
           ),
         ],
       ),
