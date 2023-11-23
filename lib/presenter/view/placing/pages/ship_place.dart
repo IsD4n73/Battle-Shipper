@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:battle_shipper/common/utils/converter.dart';
 import 'package:battle_shipper/common/utils/enums.dart';
 import 'package:battle_shipper/domain/entities/index_info.dart';
@@ -61,7 +63,12 @@ class _DraggableShipState extends State<DraggableShip> {
               BattleShipContinueButton(
                 text: "Randomize".tr(),
                 buttonType: BattleShipButtonType.light,
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    placedIndexs = _randomizeShips();
+                    ships = [];
+                  });
+                },
               ),
             ],
           ),
@@ -203,6 +210,7 @@ class _DraggableShipState extends State<DraggableShip> {
                     }
 
                     return Container(
+                      child: Text(index.toString()),
                       decoration: BoxDecoration(
                         color: placedIndexs.any(
                           (e) => e.index == index,
@@ -256,5 +264,76 @@ class _DraggableShipState extends State<DraggableShip> {
       }
     }
     return 0;
+  }
+
+  List<IndexInfo> _randomizeShips() {
+    print("ENTRATA | Random index: ${placedIndexs}");
+    var random = Random();
+    placedIndexs = [];
+    print("random index pulita");
+
+    //placedIndexs.any((element) => element.index == randomCell)
+
+    var ships = List.generate(
+        7, (index) => Ship.create(index)..isVertical = random.nextBool());
+
+    bool flag = false;
+
+    for (Ship ship in ships) {
+      print("Sto assegnanfo posizione ship");
+      List<IndexInfo> list = [];
+      flag = false;
+      int randomCell;
+      bool stopper = false;
+
+      do {
+        do {
+          randomCell = random.nextInt(99);
+          stopper = ship.isVertical
+              ? ((randomCell + ((ship.size - 1) * 10)) > 99)
+              : ((randomCell + ship.size - 1) >=
+                  ((randomCell / GridUtils.gridSize) + 1).toInt() *
+                      GridUtils.gridSize);
+        } while (stopper);
+        list = [];
+        for (int i = 0; i < ship.size; i++) {
+          if (ship.isVertical) {
+            print("Nave verticale");
+            // verticale
+            if (placedIndexs
+                .any((element) => element.index == randomCell + (i * 10))) {
+              print("Posizione gia occupata");
+              flag = true;
+              list.clear();
+              break;
+            } else {
+              flag = false;
+            }
+            IndexInfo info = IndexInfo(ship, randomCell + (i * 10), i + 1);
+            list.add(info);
+          } else {
+            print("nave orizzontale");
+            // horizontal
+            if (placedIndexs
+                .any((element) => element.index == randomCell + i)) {
+              print("Posizione gia occupata");
+              flag = true;
+              list.clear();
+              break;
+            } else {
+              flag = false;
+            }
+            IndexInfo info = IndexInfo(ship, randomCell + i, i + 1);
+            list.add(info);
+          }
+        }
+      } while (flag);
+      print("NAVE VERTICALE? ${ship.isVertical}");
+      print("Dimensione nave: ${ship.size}");
+      placedIndexs.addAll(list);
+    }
+
+    print("UUSCITA | Random index: ${placedIndexs}");
+    return placedIndexs;
   }
 }
