@@ -34,6 +34,7 @@ class _DraggableShipState extends State<DraggableShip> {
 
   @override
   Widget build(BuildContext context) {
+    double gridWidth = MediaQuery.of(context).size.height/2;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Place your ships").tr(),
@@ -70,6 +71,11 @@ class _DraggableShipState extends State<DraggableShip> {
                   });
                 },
               ),
+              BattleShipContinueButton(
+                text: "Continue".tr(),
+                buttonType: BattleShipButtonType.dark,
+                onPressed: ships.isNotEmpty ? null : () {},
+              ),
             ],
           ),
           SizedBox(
@@ -83,7 +89,7 @@ class _DraggableShipState extends State<DraggableShip> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
                     ships.length,
-                    (index) => Draggable<Ship>(
+                        (index) => Draggable<Ship>(
                       onDragCompleted: () {
                         selectedIndexs = [];
                         setState(() {});
@@ -130,23 +136,27 @@ class _DraggableShipState extends State<DraggableShip> {
               ),
             ),
           ),
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: Column(
-                children: [
-                  Row(
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: gridWidth,
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const SizedBox(
                         width: 10,
                       ),
                       ...List.generate(GridUtils.gridSize,
-                          (index) => Text(Converter.indexToLetter(index))),
+                              (index) => Text(Converter.indexToLetter(index))),
                     ],
                   ),
-                  const SizedBox(height: 5),
-                  Row(
+                ),
+                const SizedBox(height: 5),
+                SizedBox(
+                  width: gridWidth,
+                  child: Row(
                     children: [
                       Expanded(
                         child: GridView.builder(
@@ -155,8 +165,8 @@ class _DraggableShipState extends State<DraggableShip> {
                           padding: EdgeInsets.zero,
                           physics: const NeverScrollableScrollPhysics(),
                           gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisSpacing: 2, crossAxisCount: 1),
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisSpacing: 2, crossAxisCount: 1),
                           itemBuilder: (context, index) =>
                               Center(child: Text((index + 1).toString())),
                         ),
@@ -169,7 +179,7 @@ class _DraggableShipState extends State<DraggableShip> {
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: GridUtils.gridSize * GridUtils.gridSize,
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                          SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: GridUtils.gridSize,
                           ),
                           itemBuilder: (context, index) {
@@ -195,7 +205,7 @@ class _DraggableShipState extends State<DraggableShip> {
                                   for (int j = 0; j < size; j++) {
                                     if (index + (1 * j) >=
                                         ((index / GridUtils.gridSize) + 1)
-                                                .toInt() *
+                                            .toInt() *
                                             GridUtils.gridSize) {
                                       return flag;
                                     }
@@ -206,12 +216,12 @@ class _DraggableShipState extends State<DraggableShip> {
                                   if (data.isVertical) {
                                     flag = flag ||
                                         placedIndexs.any((e) =>
-                                            e.index ==
+                                        e.index ==
                                             index + (GridUtils.gridSize * j));
                                   } else {
                                     flag = flag ||
                                         placedIndexs.any(
-                                            (e) => e.index == index + (1 * j));
+                                                (e) => e.index == index + (1 * j));
                                   }
                                 }
 
@@ -226,7 +236,7 @@ class _DraggableShipState extends State<DraggableShip> {
                                     selectedIndexs.add(cell);
                                   }
                                   WidgetsBinding.instance.addPostFrameCallback(
-                                      (_) => setState(() {}));
+                                          (_) => setState(() {}));
                                 }
                                 if (placedIndexs.any((e) => e.index == index)) {
                                   return Container(
@@ -238,11 +248,11 @@ class _DraggableShipState extends State<DraggableShip> {
                                     ),
                                     child: RotatedBox(
                                       quarterTurns:
-                                          placedIndexs[getIndex(index)]
-                                                  .ship
-                                                  .isVertical
-                                              ? 0
-                                              : 3,
+                                      placedIndexs[getIndex(index)]
+                                          .ship
+                                          .isVertical
+                                          ? 0
+                                          : 3,
                                       child: Image.asset(
                                           "assets/images/ship_${placedIndexs[getIndex(index)].ship.size}_${placedIndexs[getIndex(index)].position}.png"),
                                     ),
@@ -252,7 +262,7 @@ class _DraggableShipState extends State<DraggableShip> {
                                 return Container(
                                   decoration: BoxDecoration(
                                     color: placedIndexs.any(
-                                      (e) => e.index == index,
+                                          (e) => e.index == index,
                                     )
                                         ? AppColor.secondaryColor
                                         : Colors.transparent,
@@ -260,16 +270,16 @@ class _DraggableShipState extends State<DraggableShip> {
                                       color: selectedIndexs.contains(index)
                                           ? AppColor.terziaryColor
                                           : placedIndexs.any(
-                                              (e) => e.index == index,
-                                            )
-                                              ? AppColor.secondaryColor
-                                              : AppColor.primaryColor,
+                                            (e) => e.index == index,
+                                      )
+                                          ? AppColor.secondaryColor
+                                          : AppColor.primaryColor,
                                     ),
                                   ),
                                   child: Center(
                                     child: Text(index.toString(),
                                         style:
-                                            TextStyle(color: Colors.grey[500])),
+                                        TextStyle(color: Colors.grey[500])),
                                   ),
                                 );
                               },
@@ -295,14 +305,9 @@ class _DraggableShipState extends State<DraggableShip> {
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-          BattleShipContinueButton(
-            text: "Continue".tr(),
-            buttonType: BattleShipButtonType.dark,
-            onPressed: ships.isNotEmpty ? null : () {},
           ),
         ],
       ),
@@ -343,8 +348,8 @@ class _DraggableShipState extends State<DraggableShip> {
           stopper = ship.isVertical
               ? ((randomCell + ((ship.size - 1) * 10)) > 99)
               : ((randomCell + ship.size - 1) >=
-                  ((randomCell / GridUtils.gridSize) + 1).toInt() *
-                      GridUtils.gridSize);
+              ((randomCell / GridUtils.gridSize) + 1).toInt() *
+                  GridUtils.gridSize);
         } while (stopper);
         list = [];
         for (int i = 0; i < ship.size; i++) {
@@ -381,3 +386,4 @@ class _DraggableShipState extends State<DraggableShip> {
     return placedIndexs;
   }
 }
+
