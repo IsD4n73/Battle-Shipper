@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import '../../../common/theme/app_color.dart';
 import '../../../common/utils/enums.dart';
 
-class BattleShipButton extends StatelessWidget {
+class BattleShipPrimaryButton extends StatelessWidget {
   final bool selected;
   final String text;
   final void Function()? onPressed;
   final BattleShipButtonType buttonType;
 
-  const BattleShipButton({
+  const BattleShipPrimaryButton({
     super.key,
     required this.text,
     this.onPressed,

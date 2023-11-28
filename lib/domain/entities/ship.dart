@@ -57,4 +57,9 @@ class Ship {
             ));
     }
   }
+
+  @override
+  String toString() {
+    return "Ship{size: $size, isDestroyed: $isDestroyed, isVertical: $isVertical, Image: ${(image.image as AssetImage).assetName}";
+  }
 }

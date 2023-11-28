@@ -2,9 +2,9 @@ import 'package:animated_emoji/animated_emoji.dart';
 import 'package:battle_shipper/common/theme/app_color.dart';
 import 'package:battle_shipper/common/utils/enums.dart';
 import 'package:battle_shipper/common/utils/routes.dart';
-import 'package:battle_shipper/presenter/view/placing/pages/ship_place.dart';
-import 'package:battle_shipper/presenter/view/widget/battle_ship_button.dart';
-import 'package:battle_shipper/presenter/view/widget/battle_ship_continue_button.dart';
+import 'package:battle_shipper/presenter/view/placing/pages/placing_page.dart';
+import 'package:battle_shipper/presenter/view/widget/battle_ship_primary_button.dart';
+import 'package:battle_shipper/presenter/view/widget/battle_ship_secondary_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Flexible(
-                      child: BattleShipButton(
+                      child: BattleShipPrimaryButton(
                         selected: !singlePlayer,
                         text: "Multiplayer",
                         buttonType: BattleShipButtonType.light,
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Flexible(
-                      child: BattleShipButton(
+                      child: BattleShipPrimaryButton(
                           selected: singlePlayer,
                           text: "Singleplayer",
                           buttonType: BattleShipButtonType.dark,
@@ -155,20 +155,20 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  BattleShipContinueButton(
+                  BattleShipSecondaryButton(
                     text: "JOIN",
                     buttonType: BattleShipButtonType.light,
                     onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DraggableShip(),
+                            builder: (context) => PlacingPage(),
                           ));
                     },
                   ),
                   const SizedBox(height: 10),
                   !singlePlayer
-                      ? BattleShipContinueButton(
+                      ? BattleShipSecondaryButton(
                           text: "CREATE",
                           buttonType: BattleShipButtonType.dark,
                           onPressed: () {},
