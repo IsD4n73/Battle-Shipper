@@ -5,6 +5,7 @@ import 'package:peerdart/peerdart.dart';
 class CommunicationManager {
   static String suffixCode = "BS-";
   static Peer peer = Peer();
+  static late DataConnection conn;
 
   static String getConnectionCode() {
     var rng = Random();

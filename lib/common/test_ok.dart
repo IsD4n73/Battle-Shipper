@@ -1,4 +1,5 @@
 import 'package:battle_shipper/common/utils/routes.dart';
+import 'package:battle_shipper/data/communication_manager.dart';
 import 'package:flutter/material.dart';
 
 class TestOK extends StatelessWidget {
@@ -22,7 +23,13 @@ class TestOK extends StatelessWidget {
               Navigator.pushReplacementNamed(context, AppRoutes.homeRoute);
             },
             child: const Text("Torna alla home"),
-          )
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              await CommunicationManager.conn.send("HELLOOOOO");
+            },
+            child: const Text("Send"),
+          ),
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:battle_shipper/data/communication_manager.dart';
@@ -20,7 +21,6 @@ class CreateLobby extends StatefulWidget {
 }
 
 class _CreateLobbyState extends State<CreateLobby> {
-  late DataConnection conn;
   String joinCode = CommunicationManager.getConnectionCode();
   bool isConnected = false;
 
@@ -43,20 +43,21 @@ class _CreateLobbyState extends State<CreateLobby> {
 
     CommunicationManager.peer.on<DataConnection>("connection").listen((event) {
       setState(() {
-        conn = event;
+        CommunicationManager.conn = event;
       });
 
-      conn.on("data").listen((data) {
+      CommunicationManager.conn.on("data").listen((data) {
         log("Create | DATA: $data");
         if ((data as String).contains("Connessione Riuscita!")) {
           setState(() {
             isConnected = true;
-            conn = CommunicationManager.peer.connect(data.split("!").last);
+            CommunicationManager.conn =
+                CommunicationManager.peer.connect(data.split("!").last);
           });
         }
       });
 
-      conn.on("close").listen((event) {
+      CommunicationManager.conn.on("close").listen((event) {
         log("Create | Connessione chiusa");
         isConnected = false;
         setState(() {});
@@ -133,7 +134,7 @@ class _CreateLobbyState extends State<CreateLobby> {
                 buttonType: BattleShipButtonType.light,
                 onPressed: isConnected
                     ? () async {
-                        await conn.send("Siamo Connessi!");
+                        await CommunicationManager.conn.send("Siamo Connessi!");
                         log("Create | Messaggio di risposta inviato");
                         Navigator.push(
                           context,

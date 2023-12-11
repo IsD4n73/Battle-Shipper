@@ -21,7 +21,6 @@ class JoinLobby extends StatefulWidget {
 class _JoinLobbyState extends State<JoinLobby> {
   final TextEditingController _textController = TextEditingController();
   void Function()? cancelLoading;
-  late DataConnection conn;
 
   @override
   void initState() {
@@ -39,21 +38,23 @@ class _JoinLobbyState extends State<JoinLobby> {
 
     CommunicationManager.peer.on<DataConnection>("connection").listen((event) {
       setState(() {
-        conn = event;
+        CommunicationManager.conn = event;
       });
 
-      conn.on("data").listen((data) {
+      CommunicationManager.conn.on("data").listen((data) {
         log("Join | DATA: $data");
-        cancelLoading!();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const TestOK(),
-          ),
-        );
+        if (data == "Siamo Connessi!") {
+          cancelLoading!();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const TestOK(),
+            ),
+          );
+        }
       });
 
-      conn.on("close").listen((event) {
+      CommunicationManager.conn.on("close").listen((event) {
         log("Join | Connessione chiusa");
       });
     });
@@ -125,11 +126,11 @@ class _JoinLobbyState extends State<JoinLobby> {
                 final numeric = RegExp(r'^[0-9]*$');
                 if (_textController.text.isNotEmpty &&
                     numeric.hasMatch(_textController.text)) {
-                  conn = CommunicationManager.peer.connect(
+                  CommunicationManager.conn = CommunicationManager.peer.connect(
                       CommunicationManager.suffixCode + _textController.text);
 
                   await Future.delayed(const Duration(seconds: 2));
-                  await conn.send(
+                  await CommunicationManager.conn.send(
                       "Connessione Riuscita!${CommunicationManager.peer.id}");
 
                   cancelLoading = BotToast.showLoading();
