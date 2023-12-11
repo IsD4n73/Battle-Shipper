@@ -24,10 +24,3 @@ class CommunicationModel {
     return '{"command": "$command", "value": "$value", "peerId": "$peerId", "message": "$message"';
   }
 }
-
-main() {
-  var m = CommunicationModel(
-      command: "command", value: "22", peerId: "peerId", message: "message");
-
-  print(m);
-}

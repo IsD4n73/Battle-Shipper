@@ -25,7 +25,9 @@ class _JoinLobbyState extends State<JoinLobby> {
   @override
   void initState() {
     setState(() {
-      CommunicationManager.peer = Peer();
+      CommunicationManager.peer = Peer(
+          id: CommunicationManager.suffixCode +
+              CommunicationManager.getConnectionCode());
     });
 
     CommunicationManager.peer.on("open").listen((id) {
