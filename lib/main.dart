@@ -1,10 +1,10 @@
+import 'package:battle_shipper/common/theme/app_color.dart';
 import 'package:battle_shipper/common/utils/routes.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:flutter/services.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +39,10 @@ class MyApp extends StatelessWidget {
       title: "Battle Ship",
       theme: ThemeData(
         useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColor.primaryColor,
+          brightness: Brightness.light,
+        ),
       ),
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
