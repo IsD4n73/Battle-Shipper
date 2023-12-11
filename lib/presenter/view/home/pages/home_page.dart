@@ -9,6 +9,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/mode_button.dart';
+import 'create_lobby.dart';
+import 'join_lobby.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -62,7 +64,9 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.only(left: 18, bottom: 10),
               child: Text(
                 "Select a game mode".tr(),
-                style: const TextStyle(color: Colors.grey),
+                style: const TextStyle(
+                  color: Colors.grey,
+                ),
               ),
             )),
             Flexible(
@@ -80,7 +84,6 @@ class _HomePageState extends State<HomePage> {
                           setState(() {
                             singlePlayer = false;
                           });
-                          print("CIAO BROTHER");
                         },
                       ),
                     ),
@@ -93,7 +96,6 @@ class _HomePageState extends State<HomePage> {
                             setState(() {
                               singlePlayer = true;
                             });
-                            print("HI SISTER");
                           }),
                     )
                   ],
@@ -159,11 +161,21 @@ class _HomePageState extends State<HomePage> {
                     text: "JOIN",
                     buttonType: BattleShipButtonType.light,
                     onPressed: () {
-                      Navigator.push(
+                      if (!singlePlayer) {
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => PlacingPage(),
-                          ));
+                            builder: (context) => const JoinLobby(),
+                          ),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PlacingPage(),
+                          ),
+                        );
+                      }
                     },
                   ),
                   const SizedBox(height: 10),
@@ -171,7 +183,13 @@ class _HomePageState extends State<HomePage> {
                       ? BattleShipSecondaryButton(
                           text: "CREATE",
                           buttonType: BattleShipButtonType.dark,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const CreateLobby(),
+                                ));
+                          },
                         )
                       : const SizedBox.shrink(),
                 ],
