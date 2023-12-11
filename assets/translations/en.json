@@ -9,6 +9,12 @@
   "Select a game mode": "Select a game mode",
   "Easy": "Easy",
   "Normal": "Normal",
-  "Hard": "Hard"
+  "Hard": "Hard",
+  "Continue": "Continue",
+  "Flip": "Flip",
+  "Place your ships": "Place your ships",
+  "Click on ships to rotate them": "Click on ships to rotate them",
+  "Reset": "Reset",
+  "Randomize": "Randomize"
 
 }

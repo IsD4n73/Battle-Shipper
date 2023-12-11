@@ -2,7 +2,7 @@ import 'package:battle_shipper/common/theme/app_color.dart';
 import 'package:battle_shipper/common/utils/audio.dart';
 import 'package:battle_shipper/common/utils/enums.dart';
 import 'package:battle_shipper/common/utils/key_const.dart';
-import 'package:battle_shipper/presenter/view/widget/battle_ship_continue_button.dart';
+import 'package:battle_shipper/presenter/view/widget/battle_ship_secondary_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -71,7 +71,7 @@ class _AudioBgWidgetState extends State<AudioSfxWidget> {
               await Audio.playerSfx.setVolume(currentVolume);
             },
           ),
-          BattleShipContinueButton(
+          BattleShipSecondaryButton(
             text: "Play",
             buttonType: BattleShipButtonType.light,
             onPressed: () async {

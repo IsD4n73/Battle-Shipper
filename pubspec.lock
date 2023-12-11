@@ -5,10 +5,10 @@ packages:
     dependency: "direct main"
     description:
       name: animated_emoji
-      sha256: "23984ecfa1dea62998989853ffa2572981ff3ffc001667ffef33f541f92e43d6"
+      sha256: "659581b70fa48df978deba2c3110363e1d06eba177cdafe05d9c891a39b1e28a"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "3.0.0"
   archive:
     dependency: transitive
     description:
@@ -222,6 +222,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_animate:
+    dependency: "direct main"
+    description:
+      name: flutter_animate
+      sha256: "1dbc1aabfb8ec1e9d9feed2b675c21fb6b0a11f99be53ec3bc0f1901af6a8eb7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.3.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -595,7 +603,7 @@ packages:
     source: hosted
     version: "0.2.0"
   uuid:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: uuid
       sha256: "648e103079f7c64a36dc7d39369cabb358d377078a051d6ae2ad3aa539519313"
