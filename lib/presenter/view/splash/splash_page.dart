@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:username_gen/username_gen.dart';
 
+import '../../../common/utils/key_const.dart';
+
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
 
@@ -19,10 +21,10 @@ class _SplashPageState extends State<SplashPage> {
     Audio.playBackground();
 
     SharedPreferences.getInstance().then((prefs) {
-      String? user = prefs.getString('BS-username');
+      String? user = prefs.getString(KeyConst.sharedUsername);
 
       user ??= UsernameGen().generate();
-      prefs.setString('BS-username', user);
+      prefs.setString(KeyConst.sharedUsername, user);
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {

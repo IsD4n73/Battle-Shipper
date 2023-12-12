@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../common/test_ok.dart';
 import '../../../../common/theme/app_color.dart';
 import '../../../../common/utils/enums.dart';
+import '../../../../common/utils/key_const.dart';
 import '../../widget/battle_ship_secondary_button.dart';
 
 class CreateLobby extends StatefulWidget {
@@ -38,7 +39,7 @@ class _CreateLobbyState extends State<CreateLobby> {
 
     SharedPreferences.getInstance().then((prefs) {
       setState(() {
-        username = prefs.getString('BS-username') ?? "";
+        username = prefs.getString(KeyConst.sharedUsername) ?? "";
       });
     });
 

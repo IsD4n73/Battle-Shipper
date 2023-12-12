@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../common/test_ok.dart';
 import '../../../../common/utils/enums.dart';
+import '../../../../common/utils/key_const.dart';
 import '../../../../domain/entities/communication_model.dart';
 import '../../widget/battle_ship_secondary_button.dart';
 
@@ -38,7 +39,7 @@ class _JoinLobbyState extends State<JoinLobby> {
 
     SharedPreferences.getInstance().then((prefs) {
       setState(() {
-        username = prefs.getString('BS-username') ?? "";
+        username = prefs.getString(KeyConst.sharedUsername) ?? "";
       });
     });
 
@@ -168,7 +169,26 @@ class _JoinLobbyState extends State<JoinLobby> {
                     username: username,
                   ).toString());
 
-                  cancelLoading = BotToast.showLoading();
+                  cancelLoading = BotToast.showCustomLoading(
+                    toastBuilder: (cancelFunc) => Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const CircularProgressIndicator(),
+                        const SizedBox(height: 20),
+                        BattleShipSecondaryButton(
+                          onPressed: () {
+                            CommunicationManager.conn.dispose();
+                            CommunicationManager.peer.dispose();
+                            listner.cancel();
+                            cancelFunc();
+                          },
+                          text: "Cancel",
+                          buttonType: BattleShipButtonType.dark,
+                        ),
+                      ],
+                    ),
+                  );
                   setState(() {});
                 } else {
                   BotToast.showText(text: "Inserisci il codice di invito");

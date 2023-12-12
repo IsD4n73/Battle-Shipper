@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../common/theme/app_color.dart';
 import '../../../../common/utils/enums.dart';
+import '../../../../common/utils/key_const.dart';
 import '../../widget/battle_ship_secondary_button.dart';
 
 class UsernameWidget extends StatefulWidget {
@@ -19,7 +20,7 @@ class _UsernameWidgetState extends State<UsernameWidget> {
   @override
   void initState() {
     SharedPreferences.getInstance().then((prefs) {
-      String? user = prefs.getString('BS-username');
+      String? user = prefs.getString(KeyConst.sharedUsername);
 
       _controller.text = user ?? "";
     });
@@ -68,7 +69,7 @@ class _UsernameWidgetState extends State<UsernameWidget> {
             onPressed: () async {
               if (_controller.text.isNotEmpty) {
                 SharedPreferences pref = await SharedPreferences.getInstance();
-                pref.setString("BS-username", _controller.text);
+                pref.setString(KeyConst.sharedUsername, _controller.text);
                 BotToast.showText(text: "Username salvato");
               }
             },
