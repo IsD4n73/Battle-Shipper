@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
 import 'package:battle_shipper/data/communication_manager.dart';
+import 'package:battle_shipper/domain/entities/communication_model.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +27,7 @@ class _CreateLobbyState extends State<CreateLobby> {
   String joinCode = CommunicationManager.getConnectionCode();
   String username = "";
   bool isConnected = false;
+  late StreamSubscription<DataConnection> listner;
 
   @override
   void initState() {
@@ -39,28 +42,22 @@ class _CreateLobbyState extends State<CreateLobby> {
       });
     });
 
-    CommunicationManager.peer.on("close").listen((id) {
-      log("Create | Peer chiuso");
-      isConnected = false;
-      setState(() {});
-    });
-
-    CommunicationManager.peer.on("open").listen((id) {
-      log("Create | Peer aperto con id: $id");
-    });
-
-    CommunicationManager.peer.on<DataConnection>("connection").listen((event) {
+    listner = CommunicationManager.peer
+        .on<DataConnection>("connection")
+        .listen((event) {
       setState(() {
         CommunicationManager.conn = event;
       });
 
       CommunicationManager.conn.on("data").listen((data) {
         log("Create | DATA: $data");
-        if ((data as String).contains("Connessione Riuscita!")) {
+        var communication = CommunicationModel.fromJson(jsonDecode(data));
+        CommunicationManager.friendId = communication.peerId;
+        if (communication.message == "Connessione Riuscita!") {
           setState(() {
             isConnected = true;
             CommunicationManager.conn =
-                CommunicationManager.peer.connect(data.split("!").last);
+                CommunicationManager.peer.connect(communication.peerId);
           });
         }
       });
@@ -72,6 +69,13 @@ class _CreateLobbyState extends State<CreateLobby> {
       });
     });
 
+    CommunicationManager.peer.on("close").listen((id) {
+      log("Create | Peer chiuso");
+    });
+
+    CommunicationManager.peer.on("open").listen((id) {
+      log("Create | Peer aperto con id: $id");
+    });
     super.initState();
   }
 
@@ -150,8 +154,16 @@ class _CreateLobbyState extends State<CreateLobby> {
                 buttonType: BattleShipButtonType.light,
                 onPressed: isConnected
                     ? () async {
-                        await CommunicationManager.conn.send("Siamo Connessi!");
-                        log("Create | Messaggio di risposta inviato");
+                        await CommunicationManager.conn.send(CommunicationModel(
+                          command: "connection",
+                          value: "OK",
+                          peerId: CommunicationManager.peer.id!,
+                          message: "Siamo Connessi!",
+                          username: username,
+                        ).toString());
+
+                        listner.cancel();
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(

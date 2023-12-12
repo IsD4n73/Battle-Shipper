@@ -24,6 +24,6 @@ class CommunicationModel {
 
   @override
   String toString() {
-    return '{"command": "$command", "value": "$value", "peerId": "$peerId", "message": "$message", "username": "$username"';
+    return '{"command": "$command", "value": "$value", "peerId": "$peerId", "message": "$message", "username": "$username"}';
   }
 }
