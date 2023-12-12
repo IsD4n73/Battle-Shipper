@@ -15,6 +15,15 @@
   "Place your ships": "Posiziona le navi",
   "Click on ships to rotate them": "Clicca sulle navi per ruotarle",
   "Reset": "Resetta",
+  "Save": "Salva",
+  "Codice Invito": "Codice Invito",
+  "Inserisci il codice d'invito":"Inserisci il codice d'invito",
+  "Clicca sul codice per copiarlo": "Clicca sul codice per copiarlo",
+  "Dai questo codice a chi vuoi far connettere": "Dai questo codice a chi vuoi far connettere",
+  "Status: ": "Status: ",
+  "Waiting...": "In Attesa...",
+  "JOIN": "ENTRA",
+  "CREATE": "CREA",
   "Randomize": "Randomizza"
 
 }

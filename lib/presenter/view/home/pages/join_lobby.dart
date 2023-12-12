@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:battle_shipper/common/theme/app_color.dart';
 import 'package:battle_shipper/data/communication_manager.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:peerdart/peerdart.dart';
@@ -139,18 +140,18 @@ class _JoinLobbyState extends State<JoinLobby> {
                     ),
                   ),
                 ),
-                label: const Text(
-                  "Codice Invito",
-                  style: TextStyle(
+                label: Text(
+                  "Codice Invito".tr(),
+                  style: const TextStyle(
                     color: AppColor.primaryColor,
                   ),
                 ),
-                hintText: "Inserisci il codice d'invito",
+                hintText: "Inserisci il codice d'invito".tr(),
               ),
             ),
             const SizedBox(height: 20),
             BattleShipSecondaryButton(
-              text: "Continue",
+              text: "Continue".tr(),
               buttonType: BattleShipButtonType.light,
               onPressed: () async {
                 final numeric = RegExp(r'^[0-9]*$');
@@ -180,10 +181,13 @@ class _JoinLobbyState extends State<JoinLobby> {
                           onPressed: () {
                             CommunicationManager.conn.dispose();
                             CommunicationManager.peer.dispose();
-                            listner.cancel();
+                            CommunicationManager.peer = Peer(
+                                id: CommunicationManager.suffixCode +
+                                    CommunicationManager.getConnectionCode());
+                            setState(() {});
                             cancelFunc();
                           },
-                          text: "Cancel",
+                          text: "Cancel".tr(),
                           buttonType: BattleShipButtonType.dark,
                         ),
                       ],
@@ -191,7 +195,7 @@ class _JoinLobbyState extends State<JoinLobby> {
                   );
                   setState(() {});
                 } else {
-                  BotToast.showText(text: "Inserisci il codice di invito");
+                  BotToast.showText(text: "Inserisci il codice di invito".tr());
                 }
               },
             )

@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:battle_shipper/data/communication_manager.dart';
 import 'package:battle_shipper/domain/entities/communication_model.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -102,7 +103,7 @@ class _CreateLobbyState extends State<CreateLobby> {
               InkWell(
                 onTap: () async {
                   await Clipboard.setData(ClipboardData(text: joinCode));
-                  BotToast.showText(text: "Codice Copiato!");
+                  BotToast.showText(text: "Codice Copiato!".tr());
                 },
                 child: Text(
                   joinCode,
@@ -115,14 +116,14 @@ class _CreateLobbyState extends State<CreateLobby> {
                   .animate(onPlay: (controller) => controller.repeat())
                   .shimmer(duration: 1200.ms, color: const Color(0xFF80DDFF))
                   .animate(),
-              const Text(
-                "Clicca sul codice per copiarlo",
-                style: TextStyle(color: Colors.grey),
+              Text(
+                "Clicca sul codice per copiarlo".tr(),
+                style: const TextStyle(color: Colors.grey),
               ),
               const SizedBox(height: 20),
-              const Text(
-                "Dai questo codice a chi vuoi far connettere",
-                style: TextStyle(color: Colors.grey),
+              Text(
+                "Dai questo codice a chi vuoi far connettere".tr(),
+                style: const TextStyle(color: Colors.grey),
               ),
               const SizedBox(height: 20),
               RichText(
@@ -132,18 +133,18 @@ class _CreateLobbyState extends State<CreateLobby> {
                     color: Colors.black,
                   ),
                   children: <TextSpan>[
-                    const TextSpan(text: 'Status: '),
+                    TextSpan(text: 'Status: '.tr()),
                     isConnected
-                        ? const TextSpan(
-                            text: 'Connected',
-                            style: TextStyle(
+                        ? TextSpan(
+                            text: 'Connected'.tr(),
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: AppColor.primaryColor,
                             ),
                           )
-                        : const TextSpan(
-                            text: 'Waiting...',
-                            style: TextStyle(
+                        : TextSpan(
+                            text: 'Waiting...'.tr(),
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -151,7 +152,7 @@ class _CreateLobbyState extends State<CreateLobby> {
                 ),
               ),
               BattleShipSecondaryButton(
-                text: "Continue",
+                text: "Continue".tr(),
                 buttonType: BattleShipButtonType.light,
                 onPressed: isConnected
                     ? () async {

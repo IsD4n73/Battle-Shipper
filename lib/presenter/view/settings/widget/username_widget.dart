@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -64,13 +65,13 @@ class _UsernameWidgetState extends State<UsernameWidget> {
                 ),
               )),
           BattleShipSecondaryButton(
-            text: "Save",
+            text: "Save".tr(),
             buttonType: BattleShipButtonType.dark,
             onPressed: () async {
               if (_controller.text.isNotEmpty) {
                 SharedPreferences pref = await SharedPreferences.getInstance();
                 pref.setString(KeyConst.sharedUsername, _controller.text);
-                BotToast.showText(text: "Username salvato");
+                BotToast.showText(text: "Username saved".tr());
               }
             },
           )

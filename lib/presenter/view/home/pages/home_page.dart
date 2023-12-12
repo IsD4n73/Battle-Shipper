@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BattleShipSecondaryButton(
-                    text: "JOIN",
+                    text: "JOIN".tr(),
                     buttonType: BattleShipButtonType.light,
                     onPressed: () {
                       if (!singlePlayer) {
@@ -181,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(height: 10),
                   !singlePlayer
                       ? BattleShipSecondaryButton(
-                          text: "CREATE",
+                          text: "CREATE".tr(),
                           buttonType: BattleShipButtonType.dark,
                           onPressed: () {
                             Navigator.push(

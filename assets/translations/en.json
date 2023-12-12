@@ -15,6 +15,15 @@
   "Place your ships": "Place your ships",
   "Click on ships to rotate them": "Click on ships to rotate them",
   "Reset": "Reset",
+  "Save": "Save",
+  "Codice Invito": "Initation Code",
+  "Inserisci il codice d'invito": "Enter invitation code",
+  "Clicca sul codice per copiarlo": "Click on the code to copy it",
+  "Dai questo codice a chi vuoi far connettere": "Give this code to whoever you want to connect",
+  "Status: ": "Status: ",
+  "Waiting...": "Waiting...",
+  "JOIN": "JOIN",
+  "CREATE": "CREATE",
   "Randomize": "Randomize"
 
 }
