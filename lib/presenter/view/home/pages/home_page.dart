@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                     color: AppColor.primaryColor,
                     fontSize: 16,
                     fontWeight: FontWeight.bold),
-              ).tr(),
+              ),
             )),
             Flexible(
                 child: Padding(

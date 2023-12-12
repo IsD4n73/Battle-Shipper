@@ -6,6 +6,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:peerdart/peerdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../common/test_ok.dart';
 import '../../../../common/utils/enums.dart';
@@ -20,6 +21,7 @@ class JoinLobby extends StatefulWidget {
 
 class _JoinLobbyState extends State<JoinLobby> {
   final TextEditingController _textController = TextEditingController();
+  String username = "";
   void Function()? cancelLoading;
 
   @override
@@ -28,6 +30,12 @@ class _JoinLobbyState extends State<JoinLobby> {
       CommunicationManager.peer = Peer(
           id: CommunicationManager.suffixCode +
               CommunicationManager.getConnectionCode());
+    });
+
+    SharedPreferences.getInstance().then((prefs) {
+      setState(() {
+        username = prefs.getString('BS-username') ?? "";
+      });
     });
 
     CommunicationManager.peer.on("open").listen((id) {
@@ -76,6 +84,15 @@ class _JoinLobbyState extends State<JoinLobby> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(height: 20),
+            Text(
+              "Username: $username",
+              style: const TextStyle(
+                color: AppColor.terziaryColor,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 20),
             TextField(
               cursorColor: AppColor.terziaryColor,

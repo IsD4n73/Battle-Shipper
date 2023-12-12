@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:peerdart/peerdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../common/test_ok.dart';
 import '../../../../common/theme/app_color.dart';
@@ -22,6 +23,7 @@ class CreateLobby extends StatefulWidget {
 
 class _CreateLobbyState extends State<CreateLobby> {
   String joinCode = CommunicationManager.getConnectionCode();
+  String username = "";
   bool isConnected = false;
 
   @override
@@ -29,6 +31,12 @@ class _CreateLobbyState extends State<CreateLobby> {
     setState(() {
       CommunicationManager.peer =
           Peer(id: CommunicationManager.suffixCode + joinCode);
+    });
+
+    SharedPreferences.getInstance().then((prefs) {
+      setState(() {
+        username = prefs.getString('BS-username') ?? "";
+      });
     });
 
     CommunicationManager.peer.on("close").listen((id) {
@@ -78,6 +86,14 @@ class _CreateLobbyState extends State<CreateLobby> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Text(
+                "Username: $username",
+                style: const TextStyle(
+                  color: AppColor.terziaryColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               InkWell(
                 onTap: () async {
                   await Clipboard.setData(ClipboardData(text: joinCode));

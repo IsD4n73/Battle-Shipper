@@ -19,11 +19,11 @@ class CommunicationModel {
         value: json["value"],
         peerId: json["peerId"],
         message: json["message"],
-        username: json["username"], 
+        username: json["username"],
       );
 
   @override
   String toString() {
-    return '{"command": "$command", "value": "$value", "peerId": "$peerId", "message": "$message"', "username": "$username";
+    return '{"command": "$command", "value": "$value", "peerId": "$peerId", "message": "$message", "username": "$username"';
   }
 }
