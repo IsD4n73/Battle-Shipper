@@ -1,33 +1,28 @@
-import 'package:animated_emoji/animated_emoji.dart';
 import 'package:battle_shipper/common/theme/app_color.dart';
 import 'package:battle_shipper/common/utils/enums.dart';
 import 'package:battle_shipper/common/utils/routes.dart';
-import 'package:battle_shipper/presenter/view/placing/pages/placing_page.dart';
 import 'package:battle_shipper/presenter/view/widget/battle_ship_primary_button.dart';
-import 'package:battle_shipper/presenter/view/widget/battle_ship_secondary_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
-import '../widgets/mode_button.dart';
-import 'create_lobby.dart';
-import 'join_lobby.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import '../widgets/multi_player_buttons.dart';
+import '../widgets/single_player_buttons.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   bool singlePlayer = true;
   String singleMode = "Easy";
 
+  final CarouselController carouselController = CarouselController();
+
   @override
   Widget build(BuildContext context) {
-    Orientation orientation = MediaQuery.of(context).orientation;
-    bool isPortrait = (orientation == Orientation.portrait);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Battle Ship"),
@@ -77,123 +72,57 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Flexible(
                       child: BattleShipPrimaryButton(
+                          selected: singlePlayer,
+                          text: "Singleplayer",
+                          buttonType: BattleShipButtonType.dark,
+                          onPressed: () {
+                            carouselController.animateToPage(0);
+                            setState(() {
+                              singlePlayer = true;
+                            });
+                          }),
+                    ),
+                    Flexible(
+                      child: BattleShipPrimaryButton(
                         selected: !singlePlayer,
                         text: "Multiplayer",
                         buttonType: BattleShipButtonType.light,
                         onPressed: () {
+                          carouselController.animateToPage(1);
                           setState(() {
                             singlePlayer = false;
                           });
                         },
                       ),
                     ),
-                    Flexible(
-                      child: BattleShipPrimaryButton(
-                          selected: singlePlayer,
-                          text: "Singleplayer",
-                          buttonType: BattleShipButtonType.dark,
-                          onPressed: () {
-                            setState(() {
-                              singlePlayer = true;
-                            });
-                          }),
-                    )
                   ],
                 ),
               ),
             ),
-            singlePlayer
-                ? Align(
-                    alignment: Alignment.center,
-                    child: SingleChildScrollView(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            ModeButton(
-                                selected: singleMode == "Easy",
-                                emoji: AnimatedEmojis.smile,
-                                text: "Easy".tr(),
-                                onPressed: () {
-                                  setState(() {
-                                    singleMode = "Easy";
-                                  });
-                                }),
-                            ModeButton(
-                                selected: singleMode == "Normal",
-                                emoji: AnimatedEmojis.neutralFace,
-                                text: "Normal".tr(),
-                                onPressed: () {
-                                  setState(() {
-                                    singleMode = "Normal";
-                                  });
-                                }),
-                            ModeButton(
-                                selected: singleMode == "Hard",
-                                emoji: AnimatedEmojis.screaming,
-                                text: "Hard".tr(),
-                                onPressed: () {
-                                  setState(() {
-                                    singleMode = "Hard";
-                                  });
-                                }),
-                            ModeButton(
-                                selected: singleMode == "Battleshipper"
-                                    ? true
-                                    : false,
-                                emoji: AnimatedEmojis.impSmile,
-                                text: "Battleshipper",
-                                onPressed: () {
-                                  setState(() {
-                                    singleMode = "Battleshipper";
-                                  });
-                                })
-                          ],
-                        )),
-                  )
-                : const SizedBox.shrink(),
-            Center(
-              heightFactor: isPortrait ? 5 : 2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  BattleShipSecondaryButton(
-                    text: "JOIN".tr(),
-                    buttonType: BattleShipButtonType.light,
-                    onPressed: () {
-                      if (!singlePlayer) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const JoinLobby(),
-                          ),
-                        );
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const PlacingPage(),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  !singlePlayer
-                      ? BattleShipSecondaryButton(
-                          text: "CREATE".tr(),
-                          buttonType: BattleShipButtonType.dark,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const CreateLobby(),
-                                ));
-                          },
-                        )
-                      : const SizedBox.shrink(),
-                ],
+            CarouselSlider(
+              carouselController: carouselController,
+              options: CarouselOptions(
+                initialPage: 0,
+                viewportFraction: 1.0,
+                height: MediaQuery.of(context).size.height / 2 + 50,
+                enableInfiniteScroll: false,
+                enlargeCenterPage: true,
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                onPageChanged: (index, reason) {
+                  if (index == 0) {
+                    singlePlayer = true;
+                  } else {
+                    singlePlayer = false;
+                  }
+                  setState(() {});
+                },
+                scrollDirection: Axis.horizontal,
               ),
+              items: const [
+                SinglePlayerButtons(),
+                MultiPlayerButtons(),
+              ],
             ),
           ],
         ),

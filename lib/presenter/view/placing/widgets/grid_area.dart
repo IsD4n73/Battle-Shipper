@@ -19,7 +19,8 @@ class GridArea extends StatefulWidget {
     required this.selectedIndexs,
     required this.selectedIndex,
     required this.ships,
-    required this.placedIndexs,});
+    required this.placedIndexs,
+  });
 
   @override
   State<GridArea> createState() => _GridAreaState();
@@ -47,15 +48,14 @@ class _GridAreaState extends State<GridArea> {
                     padding: EdgeInsets.zero,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: GridUtils.gridSize * GridUtils.gridSize,
-                    gridDelegate:
-                    SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: GridUtils.gridSize,
                     ),
                     itemBuilder: (context, index) {
-                      var ancestralState = context.findAncestorStateOfType<PlacingPageState>();
+                      var ancestralState =
+                          context.findAncestorStateOfType<PlacingPageState>();
                       return DragTarget<Ship>(
-                        onMove: (details) {
-                        },
+                        onMove: (details) {},
                         onLeave: (data) {
                           setState(() {
                             widget.selectedIndexs.clear();
@@ -77,8 +77,7 @@ class _GridAreaState extends State<GridArea> {
                           } else {
                             for (int j = 0; j < ancestralState!.size; j++) {
                               if (index + (1 * j) >=
-                                  ((index / GridUtils.gridSize) + 1)
-                                      .toInt() *
+                                  ((index / GridUtils.gridSize) + 1).toInt() *
                                       GridUtils.gridSize) {
                                 return flag;
                               }
@@ -89,20 +88,20 @@ class _GridAreaState extends State<GridArea> {
                             if (data.isVertical) {
                               flag = flag ||
                                   widget.placedIndexs.any((e) =>
-                                  e.index ==
+                                      e.index ==
                                       index + (GridUtils.gridSize * j));
                             } else {
                               flag = flag ||
-                                  widget.placedIndexs.any(
-                                          (e) => e.index == index + (1 * j));
+                                  widget.placedIndexs
+                                      .any((e) => e.index == index + (1 * j));
                             }
                           }
 
                           return !flag;
                         },
                         builder: (context, accepted, rejected) {
-                          if(ancestralState!=null) {
-                            if (accepted.length > 0 && accepted.first is Ship) {
+                          if (ancestralState != null) {
+                            if (accepted.isNotEmpty && accepted.first is Ship) {
                               for (int j = 0; j < ancestralState.size; j++) {
                                 int cell;
                                 if (ancestralState.shipTmp != null) {
@@ -115,12 +114,12 @@ class _GridAreaState extends State<GridArea> {
                                 widget.selectedIndexs.add(cell);
                               }
                               WidgetsBinding.instance
-                                  .addPostFrameCallback(
-                                      (_) => setState(() {}));
+                                  .addPostFrameCallback((_) => setState(() {}));
                             }
                           }
 
-                          if (widget.placedIndexs.any((e) => e.index == index)) {
+                          if (widget.placedIndexs
+                              .any((e) => e.index == index)) {
                             return Container(
                               decoration: BoxDecoration(
                                 color: Colors.grey[300],
@@ -129,10 +128,11 @@ class _GridAreaState extends State<GridArea> {
                                 ),
                               ),
                               child: RotatedBox(
-                                quarterTurns:
-                                widget.placedIndexs[GridUtils.getIndex(index, widget.placedIndexs)]
-                                    .ship
-                                    .isVertical
+                                quarterTurns: widget
+                                        .placedIndexs[GridUtils.getIndex(
+                                            index, widget.placedIndexs)]
+                                        .ship
+                                        .isVertical
                                     ? 0
                                     : 3,
                                 child: Image.asset(
@@ -144,7 +144,7 @@ class _GridAreaState extends State<GridArea> {
                           return Container(
                             decoration: BoxDecoration(
                               color: widget.placedIndexs.any(
-                                    (e) => e.index == index,
+                                (e) => e.index == index,
                               )
                                   ? AppColor.secondaryColor
                                   : Colors.transparent,
@@ -152,16 +152,15 @@ class _GridAreaState extends State<GridArea> {
                                 color: widget.selectedIndexs.contains(index)
                                     ? AppColor.terziaryColor
                                     : widget.placedIndexs.any(
-                                      (e) => e.index == index,
-                                )
-                                    ? AppColor.secondaryColor
-                                    : AppColor.primaryColor,
+                                        (e) => e.index == index,
+                                      )
+                                        ? AppColor.secondaryColor
+                                        : AppColor.primaryColor,
                               ),
                             ),
                             child: Center(
                               child: Text(index.toString(),
-                                  style:
-                                  TextStyle(color: Colors.grey[500])),
+                                  style: TextStyle(color: Colors.grey[500])),
                             ),
                           );
                         },
@@ -169,13 +168,11 @@ class _GridAreaState extends State<GridArea> {
                           setState(() {
                             for (int j = 0; j < data.size; j++) {
                               if (data.isVertical) {
-                                widget.placedIndexs.add(IndexInfo(
-                                    data,
-                                    index + (GridUtils.gridSize * j),
-                                    j + 1));
+                                widget.placedIndexs.add(IndexInfo(data,
+                                    index + (GridUtils.gridSize * j), j + 1));
                               } else {
-                                widget.placedIndexs.add(IndexInfo(
-                                    data, index + (1 * j), j + 1));
+                                widget.placedIndexs.add(
+                                    IndexInfo(data, index + (1 * j), j + 1));
                               }
                             }
                           });
