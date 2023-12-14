@@ -5,6 +5,11 @@ import 'package:battle_shipper/presenter/view/widget/battle_ship_primary_button.
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:username_gen/username_gen.dart';
+import '../../../../common/utils/audio.dart';
+import '../../../../common/utils/key_const.dart';
 import '../widgets/multi_player_buttons.dart';
 import '../widgets/single_player_buttons.dart';
 
@@ -18,11 +23,26 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   bool singlePlayer = true;
   String singleMode = "Easy";
-
   final CarouselController carouselController = CarouselController();
 
   @override
+  void initState() {
+    Audio.playBackground();
+
+    SharedPreferences.getInstance().then((prefs) {
+      String? user = prefs.getString(KeyConst.sharedUsername);
+
+      user ??= UsernameGen().generate();
+      prefs.setString(KeyConst.sharedUsername, user);
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Battle Ship"),
