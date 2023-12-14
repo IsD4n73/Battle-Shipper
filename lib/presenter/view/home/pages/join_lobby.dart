@@ -8,6 +8,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:peerdart/peerdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -91,115 +92,125 @@ class _JoinLobbyState extends State<JoinLobby> {
         title: const Text("Battle Ship"),
         centerTitle: false,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 20),
-            Text(
-              "Username: $username",
-              style: const TextStyle(
-                color: AppColor.terziaryColor,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/images/fireship2.png",
+                width: 300,
+                height: 300,
               ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              cursorColor: AppColor.terziaryColor,
-              keyboardType: TextInputType.number,
-              controller: _textController,
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
-                    onPressed: () async {
-                      ClipboardData? cdata =
-                          await Clipboard.getData(Clipboard.kTextPlain);
-                      final numeric = RegExp(r'^[0-9]*$');
-
-                      if (cdata != null && numeric.hasMatch(cdata.text ?? "")) {
-                        setState(() {
-                          _textController.text = cdata.text!;
-                        });
-                      }
-                    },
-                    icon: const Icon(Icons.paste)),
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: AppColor.primaryColor),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      20,
-                    ),
-                  ),
+              const SizedBox(height: 20),
+              Text(
+                "Username: $username",
+                style: const TextStyle(
+                  color: AppColor.terziaryColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
-                border: const OutlineInputBorder(
-                  borderSide: BorderSide(color: AppColor.primaryColor),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      20,
-                    ),
-                  ),
-                ),
-                label: Text(
-                  "Codice Invito".tr(),
-                  style: const TextStyle(
-                    color: AppColor.primaryColor,
-                  ),
-                ),
-                hintText: "Inserisci il codice d'invito".tr(),
               ),
-            ),
-            const SizedBox(height: 20),
-            BattleShipSecondaryButton(
-              text: "Continue".tr(),
-              buttonType: BattleShipButtonType.light,
-              onPressed: () async {
-                final numeric = RegExp(r'^[0-9]*$');
-                if (_textController.text.isNotEmpty &&
-                    numeric.hasMatch(_textController.text)) {
-                  CommunicationManager.conn = CommunicationManager.peer.connect(
-                      CommunicationManager.suffixCode + _textController.text);
+              const SizedBox(height: 20),
+              TextField(
+                cursorColor: AppColor.terziaryColor,
+                keyboardType: TextInputType.number,
+                controller: _textController,
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                      onPressed: () async {
+                        ClipboardData? cdata =
+                            await Clipboard.getData(Clipboard.kTextPlain);
+                        final numeric = RegExp(r'^[0-9]*$');
 
-                  await Future.delayed(const Duration(seconds: 1));
-
-                  await CommunicationManager.conn.send(CommunicationModel(
-                    command: "connection",
-                    value: "OK",
-                    peerId: CommunicationManager.peer.id!,
-                    message: "Connessione Riuscita!",
-                    username: username,
-                  ).toString());
-
-                  cancelLoading = BotToast.showCustomLoading(
-                    toastBuilder: (cancelFunc) => Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const CircularProgressIndicator(),
-                        const SizedBox(height: 20),
-                        BattleShipSecondaryButton(
-                          onPressed: () {
-                            CommunicationManager.conn.dispose();
-                            CommunicationManager.peer.dispose();
-                            CommunicationManager.peer = Peer(
-                                id: CommunicationManager.suffixCode +
-                                    CommunicationManager.getConnectionCode());
-                            setState(() {});
-                            cancelFunc();
-                          },
-                          text: "Cancel".tr(),
-                          buttonType: BattleShipButtonType.dark,
-                        ),
-                      ],
+                        if (cdata != null &&
+                            numeric.hasMatch(cdata.text ?? "")) {
+                          setState(() {
+                            _textController.text = cdata.text!;
+                          });
+                        }
+                      },
+                      icon: const Icon(Icons.paste)),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColor.primaryColor),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(
+                        20,
+                      ),
                     ),
-                  );
-                  setState(() {});
-                } else {
-                  BotToast.showText(text: "Inserisci il codice di invito".tr());
-                }
-              },
-            )
-          ],
+                  ),
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColor.primaryColor),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(
+                        20,
+                      ),
+                    ),
+                  ),
+                  label: Text(
+                    "Codice Invito".tr(),
+                    style: const TextStyle(
+                      color: AppColor.primaryColor,
+                    ),
+                  ),
+                  hintText: "Inserisci il codice d'invito".tr(),
+                ),
+              ),
+              const SizedBox(height: 20),
+              BattleShipSecondaryButton(
+                text: "Continue".tr(),
+                buttonType: BattleShipButtonType.light,
+                onPressed: () async {
+                  final numeric = RegExp(r'^[0-9]*$');
+                  if (_textController.text.isNotEmpty &&
+                      numeric.hasMatch(_textController.text)) {
+                    CommunicationManager.conn = CommunicationManager.peer
+                        .connect(CommunicationManager.suffixCode +
+                            _textController.text);
+
+                    await Future.delayed(const Duration(seconds: 1));
+
+                    await CommunicationManager.conn.send(CommunicationModel(
+                      command: "connection",
+                      value: "OK",
+                      peerId: CommunicationManager.peer.id!,
+                      message: "Connessione Riuscita!",
+                      username: username,
+                    ).toString());
+
+                    cancelLoading = BotToast.showCustomLoading(
+                      toastBuilder: (cancelFunc) => Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const CircularProgressIndicator(),
+                          const SizedBox(height: 20),
+                          BattleShipSecondaryButton(
+                            onPressed: () {
+                              CommunicationManager.conn.dispose();
+                              CommunicationManager.peer.dispose();
+                              CommunicationManager.peer = Peer(
+                                  id: CommunicationManager.suffixCode +
+                                      CommunicationManager.getConnectionCode());
+                              setState(() {});
+                              cancelFunc();
+                            },
+                            text: "Cancel".tr(),
+                            buttonType: BattleShipButtonType.dark,
+                          ),
+                        ],
+                      ),
+                    );
+                    setState(() {});
+                  } else {
+                    BotToast.showText(
+                        text: "Inserisci il codice di invito".tr());
+                  }
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

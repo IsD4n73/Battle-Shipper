@@ -92,6 +92,12 @@ class _CreateLobbyState extends State<CreateLobby> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Image.asset(
+                "assets/images/fireship3.png",
+                width: 300,
+                height: 300,
+              ),
+              const SizedBox(height: 20),
               Text(
                 "Username: $username",
                 style: const TextStyle(
