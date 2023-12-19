@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../common/theme/app_color.dart';
 import '../../../common/utils/enums.dart';
 
-class BattleShipContinueButton extends StatelessWidget {
+class BattleShipSecondaryButton extends StatelessWidget {
   final String text;
   final void Function()? onPressed;
   final BattleShipButtonType buttonType;
 
-  const BattleShipContinueButton(
+  const BattleShipSecondaryButton(
       {super.key,
       required this.text,
       this.onPressed,

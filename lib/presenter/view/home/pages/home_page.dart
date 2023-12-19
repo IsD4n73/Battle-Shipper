@@ -2,12 +2,15 @@ import 'package:animated_emoji/animated_emoji.dart';
 import 'package:battle_shipper/common/theme/app_color.dart';
 import 'package:battle_shipper/common/utils/enums.dart';
 import 'package:battle_shipper/common/utils/routes.dart';
-import 'package:battle_shipper/presenter/view/widget/battle_ship_button.dart';
-import 'package:battle_shipper/presenter/view/widget/battle_ship_continue_button.dart';
+import 'package:battle_shipper/presenter/view/placing/pages/placing_page.dart';
+import 'package:battle_shipper/presenter/view/widget/battle_ship_primary_button.dart';
+import 'package:battle_shipper/presenter/view/widget/battle_ship_secondary_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/mode_button.dart';
+import 'create_lobby.dart';
+import 'join_lobby.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -61,7 +64,9 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.only(left: 18, bottom: 10),
               child: Text(
                 "Select a game mode".tr(),
-                style: const TextStyle(color: Colors.grey),
+                style: const TextStyle(
+                  color: Colors.grey,
+                ),
               ),
             )),
             Flexible(
@@ -71,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Flexible(
-                      child: BattleShipButton(
+                      child: BattleShipPrimaryButton(
                         selected: !singlePlayer,
                         text: "Multiplayer",
                         buttonType: BattleShipButtonType.light,
@@ -79,12 +84,11 @@ class _HomePageState extends State<HomePage> {
                           setState(() {
                             singlePlayer = false;
                           });
-                          print("CIAO BROTHER");
                         },
                       ),
                     ),
                     Flexible(
-                      child: BattleShipButton(
+                      child: BattleShipPrimaryButton(
                           selected: singlePlayer,
                           text: "Singleplayer",
                           buttonType: BattleShipButtonType.dark,
@@ -92,7 +96,6 @@ class _HomePageState extends State<HomePage> {
                             setState(() {
                               singlePlayer = true;
                             });
-                            print("HI SISTER");
                           }),
                     )
                   ],
@@ -152,17 +155,41 @@ class _HomePageState extends State<HomePage> {
             Center(
               heightFactor: isPortrait ? 5 : 2,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  BattleShipContinueButton(
+                  BattleShipSecondaryButton(
                     text: "JOIN",
                     buttonType: BattleShipButtonType.light,
-                    onPressed: () {},
+                    onPressed: () {
+                      if (!singlePlayer) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const JoinLobby(),
+                          ),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PlacingPage(),
+                          ),
+                        );
+                      }
+                    },
                   ),
+                  const SizedBox(height: 10),
                   !singlePlayer
-                      ? BattleShipContinueButton(
+                      ? BattleShipSecondaryButton(
                           text: "CREATE",
                           buttonType: BattleShipButtonType.dark,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const CreateLobby(),
+                                ));
+                          },
                         )
                       : const SizedBox.shrink(),
                 ],

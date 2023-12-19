@@ -17,7 +17,16 @@ jobs:
         with:
           channel: 'stable'
       - run: flutter pub get
+      - run: flutter build apk --split-per-abi --release
       - run: flutter build web --base-href "/Battle-Shipper/"
+      
+      - uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "rel"
+          files: |
+            build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+            build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+            build/app/outputs/flutter-apk/app-x86_64-release.apk 
 
       - uses: peaceiris/actions-gh-pages@v3
         with:
